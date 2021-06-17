@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+
+    <script>
+        function listCookies() {
+            var theCookies = document.cookie.split(';');
+            var aString = '';
+            for (var i = 1 ; i <= theCookies.length; i++) {
+                aString += i + ' ' + theCookies[i-1] + "<br>";
+            }
+            document.getElementById('cookieText').innerHTML = aString;
+        }
+    </script>
+</head>
+<body>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+<hr>
+
+<form action="/counter/increase" method="post">
+    <label> Text : <input type="text" name="name"/> </label>
+    <input type="submit" value="Form Without CSRF Token"/>
+</form>
+<br>
+<!--Thymeleaf Form-->
+<!--CSRF token will be injected automatically-->
+<form th:action="@{/counter/increase}" method="post">
+    <label> Text : <input type="text" name="name"/> </label>
+    <input type="submit" value="Form With CSRF Token"/>
+</form>
+
+<hr>
+
+<p>
+    <button onclick="listCookies(); return false;">Show Cookie</button>
+</p>
+
+<p>
+    <label id="cookieText"/>
+</p>
+</body>
+</html>
